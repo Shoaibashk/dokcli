@@ -1,12 +1,16 @@
 package api
 
 import (
+	// "browser"
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/pkg/browser"
 	"github.com/shoaibashk/dokcli/ui"
 )
 
@@ -22,27 +26,43 @@ func PrettyString(str string) (string, error) {
 	return prettyJSON.String(), nil
 }
 
-func PrettyJSON[T pretty](data T) (string, error) {
-	var prettyJSON bytes.Buffer
-	// var byteData string
+// func PrettyJSON[T pretty](data T) (string, error) {
+// 	var prettyJSON bytes.Buffer
+// 	switch data. {
+// 	case string:
+// 		{
+// 			if err := json.Indent(&prettyJSON, []byte(data), "", "    "); err != nil {
+// 				return "", err
+// 			}
+// 		}
 
-	if err := json.Indent(&prettyJSON, []byte(data), "", "    "); err != nil {
-		return "", err
-	}
-	return prettyJSON.String(), nil
-}
+// 		// case :
+// 		// 	{
+// 		// 		if err := json.Indent(&prettyJSON, data, "", "    "); err != nil {
+// 		// 			return "", err
+// 		// 		}
+// 		// 	}
+
+// 	}
+// 	return prettyJSON.String(), nil
+// }
 
 func Server() {
 	// Echo instance
 	e := echo.New()
 	e.HideBanner = true
+
 	// Middleware
-	// e.Use(middleware.Logger())
-	// e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
+
+	// Routes
+	e.GET("/health", HealthCheck)
 
 	// Route => handler
 	e.GET("/spec-url", func(c echo.Context) error {
-		resp, err := http.Get("https://petstore.swagger.io/v2/swagger")
+		resp, err := http.Get("https://api.eu.urbanstreet.com/delivery/swagger/v1/swagger.json")
 
 		if err == nil {
 			defer resp.Body.Close()
@@ -69,5 +89,17 @@ func Server() {
 
 	// Start server
 	e.StaticFS("/", ui.DistDirFS)
-	e.Logger.Fatal(e.Start(":1212"))
+	// browser.Open("http://localhost:1212/")
+	// go open("http://localhost:1212/")
+	go func() {
+		<-time.After(100 * time.Millisecond)
+		browser.OpenURL("http://localhost:1212/")
+	}()
+	e.Start(":1212")
+}
+
+func HealthCheck(c echo.Context) error {
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"data": "Server is up and running",
+	})
 }

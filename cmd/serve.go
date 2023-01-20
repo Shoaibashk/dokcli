@@ -39,7 +39,7 @@ var serveCmd = &cobra.Command{
 
 		renderStr, _ := ascii.RenderOpts("Dok Cli", bannerOptions)
 		fmt.Print(renderStr)
-		fmt.Println("Server started at : " + "http://localhost:1212")
+		// fmt.Println("Server started at : " + "http://localhost:1212")
 		api.Server()
 		fmt.Println("")
 	},
