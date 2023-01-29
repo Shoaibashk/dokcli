@@ -6,9 +6,14 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/mbndr/figlet4go"
 	"github.com/shoaibashk/dokcli/api"
+	"github.com/shoaibashk/dokcli/server"
 	"github.com/spf13/cobra"
+)
+
+var (
+	port *string
+	url  *string
 )
 
 // serveCmd represents the serve command
@@ -17,35 +22,19 @@ var serveCmd = &cobra.Command{
 	Short: "start the server",
 	Long:  `start the server`,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		ascii := figlet4go.NewAsciiRender()
-
-		bannerOptions := figlet4go.NewRenderOptions()
-		bannerOptions.FontName = "larry3d"
-		bannerOptions.FontColor = []figlet4go.Color{
-			// Colors can be given by default ansi color codes...
-			figlet4go.ColorGreen,
-			figlet4go.ColorRed,
-			figlet4go.ColorCyan,
-
-			// ...or by an hex string...
-			// figlet4go.NewTrueColorFromHexString("885DBA"),
-			// ...or by an TrueColor object with rgb values
-			// figlet4go.TrueColor{136, 93, 186},
-
-		}
-
-		// figlet4go.TrueColor{255, 198, 211}
-
-		renderStr, _ := ascii.RenderOpts("Dok Cli", bannerOptions)
-		fmt.Print(renderStr)
+		banner, _ := server.DokcliBanner()
+		fmt.Print(banner)
 		// fmt.Println("Server started at : " + "http://localhost:1212")
-		api.Server()
-		fmt.Println("")
+		api.Server(*port, *url)
+		fmt.Println("Listening on :  " + *port)
 	},
 }
 
 func init() {
+
+	port = serveCmd.Flags().StringP("port", "p", "1212", "Specific port for Dokcli Server to listen")
+	url = serveCmd.Flags().StringP("url", "u", "https://petstore.swagger.io/v2/swagger.json", "Specific swagger file for Dokcli")
+
 	rootCmd.AddCommand(serveCmd)
 
 	// Here you will define your flags and configuration settings.
@@ -57,4 +46,9 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// serveCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+type serveSpec struct {
+	port *string
+	url  *string
 }

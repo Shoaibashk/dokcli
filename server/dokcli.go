@@ -14,6 +14,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	"github.com/mbndr/figlet4go"
 	"github.com/pkg/browser"
 	"github.com/shoaibashk/dokcli/ui"
 )
@@ -25,13 +26,17 @@ type Dokcli struct {
 	OpenBrowser bool
 }
 
-func (d Dokcli) New(port string, hideBanner bool, openBrowser bool) *Dokcli {
+func (d Dokcli) New(hideBanner bool, openBrowser bool) *Dokcli {
 	return &Dokcli{
-		Server:      echo.New().AcquireContext().Echo(),
-		Port:        port,
+		Server: echo.New().AcquireContext().Echo(),
+
 		HideBanner:  hideBanner,
 		OpenBrowser: openBrowser,
 	}
+}
+func (d *Dokcli) SetPort(port string) string {
+	d.Port = ":" + port
+	return port
 }
 
 func (d *Dokcli) Middleware() {
@@ -43,14 +48,13 @@ func (d *Dokcli) Middleware() {
 	// fmt.Println(d.HideBanner, d.OpenBrowser, d.Port)
 }
 
-func (d *Dokcli) Routing() {
+func (d *Dokcli) Routing(url string) {
 	// Routes
 	d.Server.GET("/health", HealthCheck)
 
 	// Route => handler
 	d.Server.GET("/spec-url", func(c echo.Context) error {
-		resp, err := http.Get("https://api.eu.urbanstreet.com/delivery/swagger/v1/swagger.json")
-
+		resp, err := http.Get(url)
 		if err == nil {
 			defer resp.Body.Close()
 			body, _ := ioutil.ReadAll(resp.Body)
@@ -67,7 +71,6 @@ func (d *Dokcli) Routing() {
 func (d *Dokcli) Register() {
 	d.Server.HideBanner = d.HideBanner
 	d.Server.HidePort = true
-
 	d.Server.Logger.SetLevel(log.INFO)
 
 }
@@ -75,8 +78,10 @@ func (d *Dokcli) StartServer() {
 	// Start server
 	d.Server.StaticFS("/", ui.DistDirFS)
 	go func() {
+		url := "http://localhost" + d.Port + "/"
+		fmt.Println(url)
 		<-time.After(100 * time.Millisecond)
-		browser.OpenURL("http://localhost:1212/")
+		browser.OpenURL(url)
 	}()
 	if err := d.Server.Start(d.Port); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		panic(err)
@@ -110,4 +115,27 @@ func HealthCheck(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"data": "Server is up and running",
 	})
+}
+
+func DokcliBanner() (string, error) {
+	ascii := figlet4go.NewAsciiRender()
+
+	bannerOptions := figlet4go.NewRenderOptions()
+	bannerOptions.FontName = "larry3d"
+	bannerOptions.FontColor = []figlet4go.Color{
+		// Colors can be given by default ansi color codes...
+		figlet4go.ColorGreen,
+		figlet4go.ColorRed,
+		figlet4go.ColorCyan,
+
+		// ...or by an hex string...
+		// figlet4go.NewTrueColorFromHexString("885DBA"),
+		// ...or by an TrueColor object with rgb values
+		// figlet4go.TrueColor{136, 93, 186},
+
+	}
+
+	// figlet4go.TrueColor{255, 198, 211}
+
+	return ascii.RenderOpts("Dok Cli", bannerOptions)
 }
