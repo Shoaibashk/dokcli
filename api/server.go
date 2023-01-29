@@ -17,12 +17,13 @@ func PrettyString(str string) (string, error) {
 	return prettyJSON.String(), nil
 }
 
-func Server() {
+func Server(port string, url string) {
 
-	d := Dok.Dokcli.New(Dok.Dokcli{}, ":1212", true, true)
+	d := Dok.Dokcli.New(Dok.Dokcli{}, true, true)
+	d.SetPort(port)
 	d.Register()
 	d.Middleware()
-	d.Routing()
+	d.Routing(url)
 	go d.StartServer()
 
 	stopCh, closeCh := Dok.CreateChannel()
