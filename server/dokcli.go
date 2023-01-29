@@ -55,7 +55,6 @@ func (d *Dokcli) Routing(url string) {
 	// Route => handler
 	d.Server.GET("/spec-url", func(c echo.Context) error {
 		resp, err := http.Get(url)
-		// "https://api.eu.urbanstreet.com/delivery/swagger/v1/swagger.json"
 		if err == nil {
 			defer resp.Body.Close()
 			body, _ := ioutil.ReadAll(resp.Body)
