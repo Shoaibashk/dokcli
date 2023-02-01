@@ -26,10 +26,9 @@ type Dokcli struct {
 	OpenBrowser bool
 }
 
-func (d Dokcli) New(hideBanner bool, openBrowser bool) *Dokcli {
+func NewServer(hideBanner bool, openBrowser bool) *Dokcli {
 	return &Dokcli{
-		Server: echo.New().AcquireContext().Echo(),
-
+		Server:      echo.New().AcquireContext().Echo(),
 		HideBanner:  hideBanner,
 		OpenBrowser: openBrowser,
 	}
