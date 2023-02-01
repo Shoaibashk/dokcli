@@ -19,7 +19,8 @@ func PrettyString(str string) (string, error) {
 
 func Server(port string, url string) {
 
-	d := Dok.Dokcli.New(Dok.Dokcli{}, true, true)
+	d := Dok.NewServer(true, true)
+
 	d.SetPort(port)
 	d.Register()
 	d.Middleware()
