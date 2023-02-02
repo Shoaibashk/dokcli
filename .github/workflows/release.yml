@@ -34,7 +34,7 @@ jobs:
           node-version: latest
 
       # - name: Build API Documentation UI
-      - run: npm --prefix=./ui ci && npm --prefix=./ui run build
+      - run: cd ui && yarn && yarn build && cd ..
 
       # - name: Run tests
       - run: go test ./...
