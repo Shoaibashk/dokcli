@@ -1,0 +1,51 @@
+name: clibuild
+
+on:
+  push:
+    # run only against tags
+    tags:
+      - "*"
+
+# permissions:
+#   contents: write
+# packages: write
+# issues: write
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up GoLang
+        run: git fetch --force --tags
+        uses: actions/setup-go@v3
+        with:
+          go-version: ">=1.19.5"
+          cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Build API Documentation UI
+        run: npm --prefix=./ui ci && npm --prefix=./ui run build
+
+      - name: Run tests
+        run: go test ./...
+
+      # More assembly might be required: Docker logins, GPG, etc. It all depends
+      # on your needs.
+
+      - uses: goreleaser/goreleaser-action@v4
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
