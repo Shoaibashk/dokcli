@@ -1,6 +1,7 @@
 name: clibuild
 
 on:
+  pull_request:
   push:
     # run only against tags
     tags:
