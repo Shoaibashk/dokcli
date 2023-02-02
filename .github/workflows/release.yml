@@ -16,28 +16,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v3
+      # - name: Checkout branch
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - run: git fetch --force --tags
 
-      - name: Set up GoLang
-        uses: actions/setup-go@v3
+      - uses: actions/setup-go@v3
         with:
           go-version: ">=1.19.5"
           cache: true
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      # - name: Set up Node.js
+      - uses: actions/setup-node@v3
         with:
           node-version: latest
 
-      - name: Build API Documentation UI
-        run: npm --prefix=./ui ci && npm --prefix=./ui run build
+      # - name: Build API Documentation UI
+      - run: npm --prefix=./ui ci && npm --prefix=./ui run build
 
-      - name: Run tests
-        run: go test ./...
+      # - name: Run tests
+      - run: go test ./...
 
       # More assembly might be required: Docker logins, GPG, etc. It all depends
       # on your needs.
