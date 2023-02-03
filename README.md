@@ -1,4 +1,4 @@
-# dokcli :zap  
+# dokcli
 
 Open Source API documentation in 1 file
 
@@ -21,7 +21,7 @@ Dokcli could be [downloaded directly as a standalone app](https://github.com/Sho
 - Store it in a folder `doc/` as a executable.
 - Now, open the terminal, cd to the newly created folder location and simply type:
   - `./dokcli serve`
-  
+
 - You can provide server port and openAPI spec url.
   - `./dokcli serve -p 2323 -u https://petstore.swagger.io/v2/swagger.json`
 
