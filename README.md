@@ -1,5 +1,7 @@
 # dokcli
 
+[![clibuild](https://github.com/Shoaibashk/dokcli/actions/workflows/release.yml/badge.svg)](https://github.com/Shoaibashk/dokcli/actions/workflows/release.yml)
+
 Open Source API documentation in 1 file
 
 ## dokcli is an open source API Documentation written in Go, consisting of
