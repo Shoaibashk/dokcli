@@ -78,7 +78,7 @@ func (d *Dokcli) StartServer() {
 	d.Server.StaticFS("/", ui.DistDirFS)
 	go func() {
 		url := "http://localhost" + d.Port + "/"
-		fmt.Println(url)
+		// fmt.Println(url)
 		<-time.After(100 * time.Millisecond)
 		browser.OpenURL(url)
 	}()

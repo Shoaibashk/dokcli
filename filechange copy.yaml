@@ -1,0 +1,29 @@
+# demosite: https://hugo-paper.vercel.app
+# description: A simple, clean, flexible Hugo theme
+# features:
+#     - Responsive
+#     - One Column
+#     - Blog
+# headertitle: Dokcli
+# homepage: https://github.com/nanxiaobei/hugo-paper/
+# license: MIT
+# licenselink: https://github.com/nanxiaobei/hugo-paper/blob/main/LICENSE
+# min_version: 0.57.1
+# name: Paper
+# specurl: https://petstore.swagger.io/v2/swagger.json
+# tabtitle: dokcli
+# tags:
+#     - Responsive:
+#           - url: https://petstore.swagger.io/v2/swagger.json
+
+# - Simple
+# - Clean
+# - Light
+# - White
+# - Blog
+
+# name: Documentaton New
+port: 8080
+spec-url:
+    petstore: https://petstore.swagger.io/v2/swagger.json
+    petstorev1: https://petstore.swagger.io/v1/swagger.json
