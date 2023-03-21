@@ -1,5 +1,5 @@
 /*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 Shoaib Shaikh <shoaibashk.2000@gmail.com>
 */
 package main
 

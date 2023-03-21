@@ -1,5 +1,5 @@
 /*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 Shoaib Shaikh <shoaibashk.2000@gmail.com>
 */
 package cmd
 
@@ -14,7 +14,7 @@ var Version = "(untracked)"
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "A brief description of your command",
+	Short: "Display the Version",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Version: %s\n", Version)
